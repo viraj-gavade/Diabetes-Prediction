@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 
 
-
+from src.components.data_transformation import DataTranformaer,DataTransformerConfig
 
 @dataclass
 class DataIngestionConfig:
@@ -67,3 +67,5 @@ if __name__ == "__main__":
     print(f"Test Data Path: {test_data}")
     print("Data ingestion completed successfully.")
     logging.info("Data ingestion completed successfully.")
+    data_transformer = DataTranformaer()
+    data_transformer.initiate_data_transformation(train_data,test_data)

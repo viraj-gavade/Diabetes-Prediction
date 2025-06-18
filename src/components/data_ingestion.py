@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 
 
 from src.components.data_transformation import DataTranformaer,DataTransformerConfig
+from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -68,4 +69,6 @@ if __name__ == "__main__":
     print("Data ingestion completed successfully.")
     logging.info("Data ingestion completed successfully.")
     data_transformer = DataTranformaer()
-    data_transformer.initiate_data_transformation(train_data,test_data)
+    train_array, test_array = data_transformer.initiate_data_transformation(train_data,test_data)
+    model_trainer = ModelTrainer()
+    print(model_trainer.initiate_model_training(train_arry=train_array,test_arry=test_array))

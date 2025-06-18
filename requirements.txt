@@ -12,4 +12,5 @@ gunicorn
 pillow
 fastapi
 pathlib
+uvicorn
 -e .

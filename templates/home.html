@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero section -->
+<section class="bg-gradient-to-b from-primary-50 to-white py-12 md:py-20">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 md:pr-8 mb-8 md:mb-0">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-900 mb-4">Early Diabetes Detection with AI</h1>
+                <p class="text-lg text-gray-700 mb-6">Our advanced machine learning model helps predict diabetes risk with high accuracy using key health indicators.</p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <a href="/predict" class="bg-accent-600 hover:bg-accent-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center">
+                        Get Your Prediction
+                    </a>
+                    <a href="/about" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://img.freepik.com/free-vector/blood-test-abstract-concept-vector-illustration-blood-laboratory-test-medical-diagnostic-test-blood-sugar-level-measurement-medical-research-analysis-donor-blood-sample-abstract-metaphor_335657-1795.jpg" alt="Diabetes Awareness" class="rounded-lg shadow-xl w-full">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features section -->
+<section class="py-12 md:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-primary-900 mb-12">Why Choose Our Diabetes Prediction Tool?</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-primary-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center justify-center w-12 h-12 bg-primary-600 rounded-full mb-4 mx-auto">
+                    <i class="fas fa-chart-line text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-primary-900 text-center mb-3">Accurate Predictions</h3>
+                <p class="text-gray-600 text-center">Our model is trained on extensive medical data to provide reliable diabetes risk assessment.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="bg-primary-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center justify-center w-12 h-12 bg-primary-600 rounded-full mb-4 mx-auto">
+                    <i class="fas fa-lock text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-primary-900 text-center mb-3">Privacy First</h3>
+                <p class="text-gray-600 text-center">Your health data remains private and secure with our encrypted prediction service.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="bg-primary-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="flex items-center justify-center w-12 h-12 bg-primary-600 rounded-full mb-4 mx-auto">
+                    <i class="fas fa-heartbeat text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-primary-900 text-center mb-3">Early Detection</h3>
+                <p class="text-gray-600 text-center">Early diagnosis is critical for diabetes management - get insights before symptoms appear.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats section -->
+<section class="py-12 md:py-16 bg-primary-900 text-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Diabetes Facts & Figures</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div>
+                <p class="text-4xl font-bold text-accent-400 mb-2">537M</p>
+                <p class="text-lg">Adults with diabetes worldwide</p>
+            </div>
+            <div>
+                <p class="text-4xl font-bold text-accent-400 mb-2">50%</p>
+                <p class="text-lg">People with diabetes are undiagnosed</p>
+            </div>
+            <div>
+                <p class="text-4xl font-bold text-accent-400 mb-2">6.7M</p>
+                <p class="text-lg">Deaths due to diabetes annually</p>
+            </div>
+            <div>
+                <p class="text-4xl font-bold text-accent-400 mb-2">90%</p>
+                <p class="text-lg">Of diabetics have Type 2 diabetes</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to action -->
+<section class="py-12 md:py-16 bg-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-2xl md:text-3xl font-bold text-primary-900 mb-6">Ready to Check Your Risk?</h2>
+        <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">Early detection is key to managing diabetes. Use our AI-powered tool to assess your risk based on important health indicators.</p>
+        <a href="/predict" class="inline-block bg-accent-600 hover:bg-accent-700 text-white font-medium py-3 px-8 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+            Get Your Prediction Now
+        </a>
+    </div>
+</section>
+{% endblock %}

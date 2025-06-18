@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-primary-50 py-8 min-h-screen">
+    <div class="container mx-auto px-4">
+        <h1 class="text-3xl md:text-4xl font-bold text-primary-900 mb-6 text-center">Diabetes Risk Prediction</h1>
+        
+        {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+        
+        {% if prediction_made %}
+        <div class="mb-12 max-w-3xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="{% if result == 'Positive' %}bg-accent-600{% else %}bg-green-600{% endif %} text-white p-6 text-center">
+                    <h2 class="text-2xl font-bold mb-2">Prediction Result</h2>
+                    <div class="text-5xl font-bold mb-4">{{ result }}</div>
+                    <p class="text-lg">{{ message }}</p>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold mb-4">Your Input Values</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Pregnancies:</span>
+                            <span class="font-medium">{{ form_data.pregnancies }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Glucose:</span>
+                            <span class="font-medium">{{ form_data.glucose }} mg/dL</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Blood Pressure:</span>
+                            <span class="font-medium">{{ form_data.bloodpressure }} mm Hg</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Skin Thickness:</span>
+                            <span class="font-medium">{{ form_data.skinthickness }} mm</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Insulin:</span>
+                            <span class="font-medium">{{ form_data.insulin }} mu U/ml</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">BMI:</span>
+                            <span class="font-medium">{{ form_data.bmi }} kg/m²</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Diabetes Pedigree Function:</span>
+                            <span class="font-medium">{{ form_data.diabetespedigreefunction }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Age:</span>
+                            <span class="font-medium">{{ form_data.age }} years</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-500 mb-4">Want to make another prediction?</p>
+                        <button onclick="resetForm()" class="bg-primary-600 hover:bg-primary-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                            Start Over
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-primary-800 mb-4">Understanding Your Result</h3>
+                <p class="mb-4">This prediction is based on the Pima Indians Diabetes Dataset and uses machine learning to assess diabetes risk. The model considers multiple factors to determine the likelihood of diabetes.</p>
+                
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <h4 class="font-medium text-lg mb-2">What should I do next?</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Remember that this tool provides an estimate and is not a medical diagnosis.</li>
+                        <li>Consult with a healthcare professional for proper diagnosis and advice.</li>
+                        <li>Regular check-ups are important for early detection and management of diabetes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gradient-to-r from-primary-600 to-primary-800 text-white p-8">
+                <div class="flex items-center mb-4">
+                    <div class="bg-white p-2 rounded-full mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">Enter Your Health Information</h2>
+                        <p class="mt-2 text-primary-100 opacity-90">Complete the form below for your personalized diabetes risk assessment</p>
+                    </div>
+                </div>
+                
+                <div class="bg-primary-700 bg-opacity-50 rounded-lg p-4 text-sm">
+                    <div class="flex items-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p>All fields are required. Enter your most recent medical information for the most accurate prediction.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form action="/predict" method="post" class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="pregnancies" class="block text-sm font-medium text-gray-700 mb-1">Pregnancies</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="pregnancies" id="pregnancies" required min="0" max="20"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Number of pregnancies">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">For males, enter 0</p>
+                        <p class="mt-1 text-xs text-gray-500">Range: 0-20</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="glucose" class="block text-sm font-medium text-gray-700 mb-1">Glucose Level (mg/dL)</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="glucose" id="glucose" required min="0" max="300"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Plasma glucose concentration">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 0-300 mg/dL</p>
+                        <p class="mt-1 text-xs text-gray-500">Normal fasting: 70-99 mg/dL</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="bloodpressure" class="block text-sm font-medium text-gray-700 mb-1">Blood Pressure (mm Hg)</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="bloodpressure" id="bloodpressure" required min="0" max="200"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Diastolic blood pressure">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 0-200 mm Hg</p>
+                        <p class="mt-1 text-xs text-gray-500">Normal: 60-80 mm Hg</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="skinthickness" class="block text-sm font-medium text-gray-700 mb-1">Skin Thickness (mm)</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="skinthickness" id="skinthickness" required min="0" max="100"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Triceps skin fold thickness">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 0-100 mm</p>
+                        <p class="mt-1 text-xs text-gray-500">Typical range: 10-50 mm</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="insulin" class="block text-sm font-medium text-gray-700 mb-1">Insulin (mu U/ml)</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="insulin" id="insulin" required min="0" max="900"
+                            autofocus
+            
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="2-Hour serum insulin">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 0-900 mu U/ml</p>
+                        <p class="mt-1 text-xs text-gray-500">Normal fasting: 2-25 mu U/ml</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="bmi" class="block text-sm font-medium text-gray-700 mb-1">BMI (kg/m²)</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="bmi" id="bmi" required min="10" max="80" step="0.1"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Body mass index">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 10-80 kg/m²</p>
+                        <p class="mt-1 text-xs text-gray-500">Normal: 18.5-24.9 kg/m²</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="diabetespedigreefunction" class="block text-sm font-medium text-gray-700 mb-1">Diabetes Pedigree Function</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="diabetespedigreefunction" id="diabetespedigreefunction" required min="0.05" max="2.5" step="0.001"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Diabetes pedigree function">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 0.05-2.5</p>
+                        <p class="mt-1 text-xs text-gray-500">Scores likelihood of diabetes based on family history</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                        <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Age (years)</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input type="number" name="age" id="age" required min="18" max="100"
+                            autofocus
+                                class="block w-full rounded-md border-2 border-blue-400 ring-1 ring-blue-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-300 sm:text-sm"
+                                placeholder="Age in years">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Range: 18-100 years</p>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <button type="submit" class="w-full bg-accent-600 hover:bg-accent-700 text-white py-3 px-6 rounded-md transition duration-300 font-medium text-lg">
+                        Get Prediction
+                    </button>
+                </div>
+            </form>
+            
+            <div class="bg-gray-50 p-6 border-t border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">About This Form</h3>
+                <p class="text-gray-600">
+                    This prediction tool uses machine learning to estimate diabetes risk based on health indicators. It's not a medical diagnosis. Always consult with a healthcare professional for proper medical advice.
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function resetForm() {
+    window.location.href = '/predict';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form validation here if needed
+});
+</script>
+{% endblock %}

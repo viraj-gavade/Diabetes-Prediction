@@ -18,13 +18,13 @@ class PredictionPipeline:
             logging.info("Started prediction process")
             base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
             model_path = os.path.join(base_dir,'artifacts','model.pkl')
-            preprocessor_path = os.path.join(base_dir,'artifcats','processor.pkl')
+            preprocessor_path = os.path.join(base_dir,'artifacts','processor.pkl')  
             
             logging.info(f"Loading model from {model_path}")
             model = load_object(model_path)
             
             logging.info(f"Loading preprocessor from {preprocessor_path}")
-            preprocessor = load_object(l=preprocessor_path) 
+            preprocessor = load_object(preprocessor_path) 
 
             logging.info("Transforming features using preprocessor")
             scaled_data = preprocessor.transform(features) 
@@ -41,7 +41,7 @@ class PredictionPipeline:
         
 
 class CustomData:
-    def __init__(self,Pregnancies:int,Glucose:int,BloodPressure:int,SkinThickness:int,Insulin:int,BMI:int,DiabetesPedigeeFunction:int,Age:int):
+    def __init__(self,Pregnancies:int,Glucose:int,BloodPressure:int,SkinThickness:int,Insulin:int,BMI:float,DiabetesPedigreeFunction:float,Age:int):
         logging.info("Initializing CustomData object with user inputs")
         self.Pregnancies = Pregnancies
         self.Glucose = Glucose
@@ -49,9 +49,9 @@ class CustomData:
         self.SkinThickness = SkinThickness
         self.Insulin = Insulin
         self.BMI = BMI
-        self.DiabetesPedigeeFunction = DiabetesPedigeeFunction
+        self.DiabetesPedigreeFunction = DiabetesPedigreeFunction
         self.Age = Age
-        logging.info(f"CustomData initialized with parameters: Pregnancies={Pregnancies}, Glucose={Glucose}, BloodPressure={BloodPressure}, SkinThickness={SkinThickness}, Insulin={Insulin}, BMI={BMI}, DiabetesPedigeeFunction={DiabetesPedigeeFunction}, Age={Age}")
+        logging.info(f"CustomData initialized with parameters: Pregnancies={Pregnancies}, Glucose={Glucose}, BloodPressure={BloodPressure}, SkinThickness={SkinThickness}, Insulin={Insulin}, BMI={BMI}, DiabetesPedigreeFunction={DiabetesPedigreeFunction}, Age={Age}")
 
 
     def get_data_as_dataframe(self):
@@ -64,7 +64,7 @@ class CustomData:
                 'SkinThickness':[self.SkinThickness],
                 'Insulin':[self.Insulin],
                 'BMI':[self.BMI],
-                'DiabetesPedigeeFunction':[self.DiabetesPedigeeFunction],
+                'DiabetesPedigreeFunction':[self.DiabetesPedigreeFunction],
                 'Age':[self.Age]
             }
 

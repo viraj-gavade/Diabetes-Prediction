@@ -59,23 +59,42 @@ class ModelTrainer :
 
             for model_name in model_report:
                 train_score = model_report[model_name]['Train Accuracy Score']
+                logging.info(f"Model: {model_name}, Train Accuracy: {train_score:.4f}, Test Accuracy: {model_report[model_name]['Test Accuracy Score']:.4f}")
                 if train_score > best_model_score:
                     best_model_score = train_score
                     best_model_name = model_name
+                    logging.debug(f"Found better model: {best_model_name} with score: {best_model_score:.4f}")
 
-
-
-            logging.info(f'Best model score found: {best_model_score}')
-            logging.info(f'Best performing model: {best_model_name}')
+            logging.info(f"Best model evaluation complete")
+            logging.info(f"Best model score found: {best_model_score:.4f}")
+            logging.info(f"Best performing model: {best_model_name}")
 
             best_model = models[best_model_name]
-
-            logging.info(f'Saving the best model to {self.trained_model_config_path.trained_model_path}')
-            save_object(filepath=self.trained_model_config_path.trained_model_path, obj=best_model)
-            logging.info(f'Best model saved successfully')
-
             
+            # Get test accuracy of the best model for reporting
+            test_accuracy = model_report[best_model_name]['Test Accuracy Score']
+            logging.info(f"Best model test accuracy: {test_accuracy:.4f}")
+            
+            # Save model file path
+            model_path = self.trained_model_config_path.trained_model_path
+            logging.info(f"Saving the best model ({best_model_name}) to {model_path}")
+            
+            try:
+                save_object(filepath=model_path, obj=best_model)
+                logging.info(f"Best model saved successfully")
+                
+                # Return model details for reporting
+                return {
+                    "best_model_name": best_model_name,
+                    "train_accuracy": best_model_score,
+                    "test_accuracy": test_accuracy,
+                    "model_path": model_path
+                }
+            except Exception as e:
+                logging.error(f"Error saving model: {str(e)}")
+                raise CustomException(f"Model saving failed: {str(e)}", sys)
 
         except Exception as e:
+            logging.error(f"Exception occurred during model training: {str(e)}")
             print(e)
             raise CustomException(e,sys)

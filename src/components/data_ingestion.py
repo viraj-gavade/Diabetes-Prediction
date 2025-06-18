@@ -57,18 +57,40 @@ class DataIngestion:
 
 
         except Exception as e:
+            logging.error(f"Exception occurred during data ingestion: {str(e)}")
             print(e)
             raise CustomException(e,sys)
         
 
 if __name__ == "__main__":
-    obj = DataIngestion()
-    train_data, test_data = obj.initiate_data_ingestion()
-    print(f"Train Data Path: {train_data}")
-    print(f"Test Data Path: {test_data}")
-    print("Data ingestion completed successfully.")
-    logging.info("Data ingestion completed successfully.")
-    data_transformer = DataTranformaer()
-    train_array, test_array = data_transformer.initiate_data_transformation(train_data,test_data)
-    model_trainer = ModelTrainer()
-    print(model_trainer.initiate_model_training(train_arry=train_array,test_arry=test_array))
+    logging.info("Data ingestion process started")
+    try:
+        obj = DataIngestion()
+        logging.info("Data ingestion object created")
+        
+        train_data, test_data = obj.initiate_data_ingestion()
+        logging.info(f"Data ingestion completed. Train data: {train_data}, Test data: {test_data}")
+        print(f"Train Data Path: {train_data}")
+        print(f"Test Data Path: {test_data}")
+        print("Data ingestion completed successfully.")
+        
+        logging.info("Starting data transformation process")
+        data_transformer = DataTranformaer()
+        logging.info("Data transformer object created")
+        
+        train_array, test_array = data_transformer.initiate_data_transformation(train_data, test_data)
+        logging.info("Data transformation completed successfully")
+        
+        logging.info("Starting model training process")
+        model_trainer = ModelTrainer()
+        logging.info("Model trainer object created")
+        
+        result = model_trainer.initiate_model_training(train_arry=train_array, test_arry=test_array)
+        logging.info(f"Model training completed with result: {result}")
+        print(result)
+        
+        logging.info("End-to-end ML pipeline executed successfully")
+        
+    except Exception as e:
+        logging.error(f"Error in main execution: {str(e)}")
+        raise CustomException(e, sys)

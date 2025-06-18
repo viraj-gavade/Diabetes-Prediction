@@ -111,65 +111,6 @@ async def predict_diabetes(
             }
         )
 
-@app.get("/api/visualization-data")
-async def get_visualization_data():
-    # Read the CSV file
-    df = pd.read_csv('artifacts/raw.csv')
-    
-    # Basic statistics
-    basic_stats = {
-        'total_records': len(df),
-        'diabetic_count': int(df['Outcome'].sum()),
-        'non_diabetic_count': int(len(df) - df['Outcome'].sum())
-    }
-    
-    # Age distribution
-    age_bins = [20, 30, 40, 50, 60, 70, 80]
-    age_labels = ['20-29', '30-39', '40-49', '50-59', '60-69', '70-79']
-    df['age_group'] = pd.cut(df['Age'], bins=age_bins, labels=age_labels, right=False)
-    age_distribution = df['age_group'].value_counts().sort_index().to_dict()
-    
-    # Feature correlations with outcome
-    correlations = {}
-    for col in df.columns:
-        if col not in ['Outcome', 'age_group']:
-            correlations[col] = float(df[col].corr(df['Outcome']))
-    
-    # Feature distributions by outcome
-    feature_distributions = {}
-    for feature in ['Glucose', 'BMI', 'Age', 'BloodPressure', 'Insulin']:
-        diabetic = df[df['Outcome'] == 1][feature].tolist()
-        non_diabetic = df[df['Outcome'] == 0][feature].tolist()
-        feature_distributions[feature] = {
-            'diabetic': diabetic,
-            'non_diabetic': non_diabetic
-        }
-    
-    # Pair-wise correlations
-    corr_matrix = df.drop(columns=['age_group'] if 'age_group' in df.columns else []).corr().round(2)
-    corr_data = corr_matrix.to_dict()
-    
-    # BMI categories
-    bmi_bins = [0, 18.5, 25, 30, 100]
-    bmi_labels = ['Underweight', 'Normal', 'Overweight', 'Obese']
-    df['bmi_category'] = pd.cut(df['BMI'], bins=bmi_bins, labels=bmi_labels)
-    bmi_outcome = pd.crosstab(df['bmi_category'], df['Outcome']).reset_index()
-    bmi_outcome_data = {
-        'categories': bmi_outcome['bmi_category'].tolist(),
-        'diabetic': bmi_outcome[1].tolist(),
-        'non_diabetic': bmi_outcome[0].tolist()
-    }
-    
-    # Return all visualization data
-    return {
-        'basic_stats': basic_stats,
-        'age_distribution': age_distribution,
-        'correlations': correlations,
-        'feature_distributions': feature_distributions,
-        'correlation_matrix': corr_data,
-        'bmi_outcome': bmi_outcome_data
-    }
-
 if __name__ == "__main__":
     # Create directories if they don't exist
     Path("static").mkdir(exist_ok=True)

@@ -12,9 +12,7 @@ from src.components.pipline.prediction_pipeline import CustomData, PredictionPip
 # Create FastAPI app
 app = FastAPI(title="Diabetes Prediction")
 
-# Add middleware to handle CSRF if needed
-from starlette.middleware.sessions import SessionMiddleware
-app.add_middleware(SessionMiddleware, secret_key="diabetes_prediction_secret")
+
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -22,22 +20,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Setup Jinja2 templates
 templates = Jinja2Templates(directory="templates")
 
-# Test endpoint
-@app.post("/test-form")
-async def test_form(name: str = Form(...)):
-    return {"received": name}
-
-@app.get("/test", response_class=HTMLResponse)
-async def test_page(request: Request):
-    return templates.TemplateResponse("test.html", {"request": request})
 
 # Routes
 @app.get("/", response_class=HTMLResponse)
 async def home_page(request: Request):
     return templates.TemplateResponse("home.html", {"request": request, "page_title": "Home - Diabetes Prediction"})
-
-
-    return templates.TemplateResponse("visualize.html", {"request": request, "page_title": "Data Visualization"})
 
 @app.get("/predict", response_class=HTMLResponse)
 async def predict_page(request: Request):

@@ -1,18 +1,9 @@
 services:
-  # Web service
   - type: web
-    name: diabetes-prediction
+    name: heart-disease-prediction
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app:app --host=0.0.0.0 --port=$PORT
+    startCommand: uvicorn application:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.9.0  # Web service
-  - type: web
-    name: diabetes-prediction
-    runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.9.0
+        value: 3.10.0

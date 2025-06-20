@@ -12,9 +12,7 @@ from src.components.pipline.prediction_pipeline import CustomData, PredictionPip
 # Create FastAPI app
 app = FastAPI(title="Diabetes Prediction")
 
-# Add middleware to handle CSRF if needed
-from starlette.middleware.sessions import SessionMiddleware
-app.add_middleware(SessionMiddleware, secret_key="diabetes_prediction_secret")
+
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
